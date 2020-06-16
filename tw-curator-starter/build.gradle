@@ -1,0 +1,46 @@
+plugins {
+    id 'java-library'
+    id 'idea'
+    id "docker-compose"
+}
+
+ext.projectName = "tw-curator-starter"
+ext.projectDescription = "tw-curator-starter"
+ext.projectArtifactName = "tw-curator-starter"
+
+apply from: "../build.common.gradle"
+apply from: "../build.library.gradle"
+
+dependencies {
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.0.1'
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.apache.curator:curator-recipes:4.3.0'
+    implementation 'com.transferwise.common:tw-context-starter:0.3.1'
+    implementation 'org.apache.commons:commons-lang3'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-actuator'
+    testImplementation 'org.projectlombok:lombok'
+    testImplementation 'org.awaitility:awaitility:4.0.3'
+}
+
+dockerCompose.isRequiredBy(test)
+
+dockerCompose {
+    useComposeFiles = ["src/test/resources/docker-compose.yml"]
+    // Create some flakiness on slower comps
+    // waitForTcpPorts = false
+
+    // Set to true if you have anomalies
+    stopContainers = false
+    removeContainers = false
+}
+
+test {
+    doFirst {
+        dockerCompose.exposeAsEnvironment(test)
+    }
+}

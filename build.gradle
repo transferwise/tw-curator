@@ -1,0 +1,26 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://arti.tw.ee/artifactory/libs-release'
+        }
+        mavenLocal()
+    }
+    dependencies {
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.10.9"
+    }
+}
+
+plugins {
+    id 'idea'
+    id "com.github.spotbugs" version "4.0.3" apply false
+}
+
+idea.project {
+    vcs = 'Git'
+    languageLevel = JavaVersion.VERSION_1_8
+    targetBytecodeVersion = JavaVersion.VERSION_1_8
+}
+
+ext {
+    springBootVersion = "2.2.7.RELEASE"
+}

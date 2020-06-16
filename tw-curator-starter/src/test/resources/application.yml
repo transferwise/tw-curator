@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: tw-curator-starter-test
+
+tw-curator:
+  zookeeper-connect-string: "localhost:${ZOOKEEPER_TCP_2181}"
