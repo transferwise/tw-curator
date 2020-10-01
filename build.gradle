@@ -6,13 +6,13 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.10.9"
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.13.3"
     }
 }
 
 plugins {
     id 'idea'
-    id "com.github.spotbugs" version "4.0.3" apply false
+    id "com.github.spotbugs" version "4.5.1" apply false
 }
 
 idea.project {
@@ -22,5 +22,5 @@ idea.project {
 }
 
 ext {
-    springBootVersion = "2.2.7.RELEASE"
+    springBootVersion = "2.3.4.RELEASE"
 }
