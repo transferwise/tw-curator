@@ -13,6 +13,7 @@ buildscript {
 plugins {
     id 'idea'
     id "com.github.spotbugs" version "4.5.1" apply false
+    id "at.zierler.yamlvalidator" version "1.5.0"
 }
 
 idea.project {
@@ -23,4 +24,10 @@ idea.project {
 
 ext {
     springBootVersion = "2.3.4.RELEASE"
+}
+
+yamlValidator {
+    searchPaths = ['.circleci/']
+    allowDuplicates = false
+    searchRecursive = true
 }

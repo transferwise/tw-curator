@@ -102,3 +102,9 @@ tasks.findAll { it.name.startsWith("spotbugs") }*.configure {
 clean.doFirst {
     delete "out"
 }
+
+yamlValidator {
+    searchPaths = ['src']
+    allowDuplicates = false
+    searchRecursive = true
+}
