@@ -4,7 +4,7 @@ version: 2
 references:
   container_config: &container_config
     docker:
-      - image: arti.tw.ee/circle_openjdk8:latest
+      - image: arti.tw.ee/circle_openjdk13
         user: circleci
     resource_class: medium
     environment:
@@ -16,7 +16,17 @@ references:
 jobs:
   build:
     <<: *working_directory
-    <<: *container_config
+    environment:
+      IN_CIRCLE: true
+      ZOOKEEPER_TCP_2181: 2181
+      TERM: vt100
+    docker:
+      - image: arti.tw.ee/circle_openjdk13
+        user: circleci
+      - image: bitnami/zookeeper:3.5.5
+        environment:
+          ZOO_MY_ID: 1
+          ALLOW_ANONYMOUS_LOGIN: "yes"
     steps:
       - checkout
       - restore_cache:
@@ -31,8 +41,17 @@ jobs:
           paths:
             - ~/.gradle/
           key: tw-curator-gradle-{{ checksum "build.gradle" }}-{{ checksum "gradle.properties" }}
+      - run:
+          name: Gather starter test results
+          shell: /bin/bash
+          command: |
+            pushd tw-tkms-starter/build/reports/tests/test && zip -r ~/junit_html.zip * && popd || true
+          when: always
       - store_test_results:
           path: ./tw-curator-starter-core/build/test-results/
+      - store_artifacts:
+          path: ~/junit_html.zip
+          when: always          
       - persist_to_workspace:
           root: .
           paths:
