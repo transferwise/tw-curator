@@ -27,7 +27,9 @@ dependencies {
     testImplementation 'org.awaitility:awaitility:4.0.3'
 }
 
-dockerCompose.isRequiredBy(test)
+if (System.getenv("IN_CIRCLE") != "true") {
+    dockerCompose.isRequiredBy(test)
+}
 
 dockerCompose {
     useComposeFiles = ["src/test/resources/docker-compose.yml"]
