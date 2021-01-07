@@ -40,6 +40,8 @@ public class TwCuratorAutoConfiguration {
     CuratorFramework curatorFramework = CuratorFrameworkFactory.builder()
         .connectionTimeoutMs((int) properties.getConnectionTimeout().toMillis())
         .sessionTimeoutMs((int) properties.getSessionTimeout().toMillis())
+        .maxCloseWaitMs((int)properties.getCloseTimeout().toMillis())
+        .waitForShutdownTimeoutMs((int)properties.getWaitForShutdownTimeout().toMillis())
         .canBeReadOnly(false)
         .connectString(properties.getZookeeperConnectString())
         .retryPolicy(retryPolicy)
