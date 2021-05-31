@@ -34,6 +34,9 @@ jobs:
           name: Assemble jar
           command: ./gradlew assemble --refresh-dependencies --console=plain --no-daemon
       - run:
+          name: Make sure tests tmp dir exists
+          command: mkdir tests-out
+      - run:
           name: Run tests
           command: ./gradlew check --console=plain --no-daemon --stacktrace
       - save_cache:
