@@ -1,10 +1,11 @@
 apply plugin: "maven-publish"
+apply plugin: "signing"
 
+ext.artifactoryUser = project.hasProperty("artifactoryUser") ? project.artifactoryUser : System.env.ARTIFACTORY_USER as String
+ext.artifactoryPassword = project.hasProperty("artifactoryPassword") ? project.artifactoryPassword : System.env.ARTIFACTORY_PASSWORD as String
 ext.projectGitHubRepoName = "tw-curator"
 ext.projectScmUrl = "https://github.com/transferwise/${projectGitHubRepoName}"
 ext.projectScmConnection = "scm:git:git://github.com/transferwise/${projectGitHubRepoName}.git"
-ext.artifactoryUser = project.hasProperty("artifactoryUser") ? project.artifactoryUser : System.env.ARTIFACTORY_USER as String
-ext.artifactoryPassword = project.hasProperty("artifactoryPassword") ? project.artifactoryPassword : System.env.ARTIFACTORY_PASSWORD as String
 
 publishing {
     publications {
@@ -21,7 +22,7 @@ publishing {
                 packaging = "jar"
                 licenses {
                     license {
-                        name = 'The Apache License, Version 2.0, Copyright 2019 TransferWise Ltd'
+                        name = 'The Apache License, Version 2.0, Copyright 2021 TransferWise Ltd'
                         url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
@@ -43,6 +44,12 @@ publishing {
         }
     }
 
+    if (System.getenv("OPENSOURCE_PUBLISH") == "true") {
+        signing {
+            sign publishing.publications.mavenJava
+        }
+    }
+
     javadoc {
         if (JavaVersion.current().isJava9Compatible()) {
             options.addBooleanOption('html5', true)
@@ -50,21 +57,31 @@ publishing {
     }
 
     repositories {
-        maven {
-            url "https://arti.tw.ee/artifactory/libs-${project.version.endsWith('-SNAPSHOT') ? 'snapshot' : 'release'}-local"
-            credentials {
-                username = artifactoryUser
-                password = artifactoryPassword
+        if (System.getenv("OPENSOURCE_PUBLISH") == "true") {
+            maven {
+                url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                credentials {
+                    username sonatypeUsername
+                    password sonatypePassword
+                }
+            }
+        } else {
+            maven {
+                url "https://arti.tw.ee/artifactory/libs-${project.version.endsWith('-SNAPSHOT') ? 'snapshot' : 'release'}-local"
+                credentials {
+                    username = artifactoryUser
+                    password = artifactoryPassword
+                }
             }
         }
     }
 }
 
 task addTag(type: Exec) {
-    commandLine 'git', 'tag', "$project.name-$project.version", '-m', "$project.name-$project.version"
+    commandLine 'git', 'tag', "$project.projectArtifactName-$project.version", '-m', "$project.projectArtifactName-$project.version"
 }
 task pushTag(type: Exec) {
-    commandLine 'git', 'push', 'origin', "$project.name-$project.version"
+    commandLine 'git', 'push', 'origin', "$project.projectArtifactName-$project.version"
 }
 
 pushTag.dependsOn addTag
