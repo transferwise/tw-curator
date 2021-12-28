@@ -36,9 +36,9 @@ jobs:
             ~/.gradle
           key: gradle-v1-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties', '**/*.gradle*') }}
       - name: "Assemble jar"
-        run: ./gradlew assemble --console=plain --no-daemon
+        run: GRADLE_USER_HOME=$HOME/.gradle ./gradlew assemble --console=plain --no-daemon
       - name: "Run tests"
-        run: ./gradlew check --console=plain --no-daemon --stacktrace
+        run: GRADLE_USER_HOME=$HOME/.gradle ./gradlew check --console=plain --no-daemon --stacktrace
       - name: "Publish Test Report"
         uses: mikepenz/action-junit-report@v2
         if: always()
