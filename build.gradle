@@ -36,7 +36,7 @@ task tagRelease {
                 name = "v$version"
                 message = "Release of ${version}"
             }
-            grgit.push()
+            grgit.push(refsOrSpecs: ["v$version"])
         }
         catch (RefAlreadyExistsException ignored) {
             logger.warn("Tag v$version already exists.")
