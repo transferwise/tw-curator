@@ -27,8 +27,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Debug with tmate on failure
-        uses: mxschmitt/action-tmate@v3
       - name: "Retrieve gradle settings"
         uses: actions/cache@v2
         with:
