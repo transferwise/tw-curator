@@ -44,22 +44,19 @@ publishing {
         }
     }
 
-    signing {
-        def signingKey = System.env.OSS_SIGNING_KEY as String
-        def signingPassword = System.env.OSS_SIGNING_PASSWORD as String
-
-        if (signingKey && signingPassword) {
-            useInMemoryPgpKeys(signingKey, signingPassword)
+    if (System.getenv("OSS_SIGNING_KEY")) {
+        signing {
+            useInMemoryPgpKeys(System.getenv("OSS_SIGNING_KEY"), System.getenv("OSS_SIGNING_PASSWORD"))
             sign publishing.publications.mavenJava
         }
     }
 
     repositories {
         maven {
-            url System.env.MAVEN_URL as String
+            url System.getenv("MAVEN_URL")
             credentials {
-                username = System.env.MAVEN_USER as String
-                password = System.env.MAVEN_PASSWORD as String
+                username = System.getenv("MAVEN_USER")
+                password = System.getenv("MAVEN_PASSWORD")
             }
         }
     }
