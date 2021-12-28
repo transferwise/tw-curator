@@ -1,3 +1,5 @@
+import org.eclipse.jgit.api.errors.RefAlreadyExistsException
+
 buildscript {
     dependencies {
         classpath "com.avast.gradle:gradle-docker-compose-plugin:0.14.12"
@@ -8,6 +10,7 @@ plugins {
     id 'idea'
     id "com.github.spotbugs" version "5.0.3" apply false
     id "at.zierler.yamlvalidator" version "1.5.0"
+    id 'org.ajoberstar.grgit' version '4.1.1'
 }
 
 idea.project {
@@ -24,4 +27,19 @@ yamlValidator {
     searchPaths = ['.circleci/']
     allowDuplicates = false
     searchRecursive = true
+}
+
+task tagRelease {
+    doLast {
+        try {
+            grgit.tag.add {
+                name = "v$version"
+                message = "Release of ${version}"
+            }
+            grgit.push()
+        }
+        catch (RefAlreadyExistsException ignored) {
+            logger.warn("Tag v$version already exists.")
+        }
+    }
 }

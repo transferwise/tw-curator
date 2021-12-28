@@ -44,45 +44,24 @@ publishing {
         }
     }
 
-    if (System.getenv("OPENSOURCE_PUBLISH") == "true") {
-        signing {
+    signing {
+        def signingKey = System.env.OSS_SIGNING_KEY as String
+        def signingPassword = System.env.OSS_SIGNING_PASSWORD as String
+
+        if (signingKey && signingPassword) {
+            useInMemoryPgpKeys(signingKey, signingPassword)
             sign publishing.publications.mavenJava
         }
     }
 
-    javadoc {
-        if (JavaVersion.current().isJava9Compatible()) {
-            options.addBooleanOption('html5', true)
-        }
-    }
-
     repositories {
-        if (System.getenv("OPENSOURCE_PUBLISH") == "true") {
-            maven {
-                url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-                credentials {
-                    username sonatypeUsername
-                    password sonatypePassword
-                }
-            }
-        } else {
-            maven {
-                url "https://arti.tw.ee/artifactory/libs-${project.version.endsWith('-SNAPSHOT') ? 'snapshot' : 'release'}-local"
-                credentials {
-                    username = artifactoryUser
-                    password = artifactoryPassword
-                }
+        maven {
+            url System.env.MAVEN_URL as String
+            credentials {
+                username = System.env.MAVEN_USER as String
+                password = System.env.MAVEN_PASSWORD as String
             }
         }
     }
 }
 
-task addTag(type: Exec) {
-    commandLine 'git', 'tag', "$project.projectArtifactName-$project.version", '-m', "$project.projectArtifactName-$project.version"
-}
-task pushTag(type: Exec) {
-    commandLine 'git', 'push', 'origin', "$project.projectArtifactName-$project.version"
-}
-
-pushTag.dependsOn addTag
-pushTag.mustRunAfter publish
