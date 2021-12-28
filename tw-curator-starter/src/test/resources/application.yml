@@ -3,4 +3,4 @@ spring:
     name: tw-curator-starter-test
 
 tw-curator:
-  zookeeper-connect-string: "localhost:${ZOOKEEPER_TCP_2181}"
+  zookeeper-connect-string: "${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_TCP_2181}"
