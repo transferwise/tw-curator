@@ -1,0 +1,2 @@
+tw-curator:
+  zookeeper-connect-string: "${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_TCP_2181}"

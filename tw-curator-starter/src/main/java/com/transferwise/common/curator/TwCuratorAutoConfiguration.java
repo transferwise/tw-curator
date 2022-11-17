@@ -11,12 +11,15 @@ import org.apache.curator.framework.state.ConnectionStateListener;
 import org.apache.curator.retry.RetryNTimes;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 @ConditionalOnExpression("'${tw-curator.disabled}' != 'true'")
+@ConditionalOnProperty({"tw-curator.zookeeper-connect-string"})
 @Configuration
 @Slf4j
 public class TwCuratorAutoConfiguration {
@@ -31,10 +34,6 @@ public class TwCuratorAutoConfiguration {
   @Bean(destroyMethod = "close")
   @ConditionalOnMissingBean
   public CuratorFramework twCuratorFramework(ApplicationContext applicationContext, TwCuratorProperties properties, RetryPolicy retryPolicy) {
-    if (StringUtils.trimToNull(properties.getZookeeperConnectString()) == null) {
-      throw new IllegalStateException("'tw-curator.zookeeper-connect-string' parameter is missing.");
-    }
-
     Collection<ConnectionStateListener> listeners = applicationContext.getBeansOfType(ConnectionStateListener.class).values();
 
     CuratorFramework curatorFramework = CuratorFrameworkFactory.builder()
