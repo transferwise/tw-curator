@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles(profiles = {"integration"})
 @SpringBootTest(classes = {TestApplication.class}, properties = {"tw-curator.disabled=true"})
-public class CuratorConfigurationDisabledTest {
+public class CuratorConfigurationDisabledIntTest {
 
   @Autowired(required = false)
   private CuratorFramework curatorFramework;

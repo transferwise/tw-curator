@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @BaseTestEnvironment
-public class CuratorConfigurationTest {
+public class CuratorConfigurationIntTest {
 
   @Autowired
   private CuratorFramework curatorFramework;
