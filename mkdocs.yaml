@@ -4,5 +4,6 @@ edit_uri: blob/master/docs/
 nav:
   - Overview: index.md
   - Configuration: configuration.md
+  - Usage: usage.md
   - Contributing: contributing.md
   - License: license.md

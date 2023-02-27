@@ -1,4 +1,4 @@
-## Configuration
+# Configuration
 
 Usually you just need to specify `tw-curator.zookeeper-connect-string`.
 
