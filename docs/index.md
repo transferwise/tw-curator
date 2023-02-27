@@ -5,7 +5,6 @@
 * [Configuration](configuration.md)
 * [Usage](usage.md)
 * [Contribution Guide](contributing.md)
-* [License](license.md)
 
 ## Intro
 
