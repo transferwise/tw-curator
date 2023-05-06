@@ -21,8 +21,6 @@ jobs:
           - 3.0.6
           - 2.7.11
           - 2.6.14
-    container:
-      image: azul/zulu-openjdk:17
     services:
       zookeeper:
         image: bitnami/zookeeper:3.5.5
@@ -37,8 +35,6 @@ jobs:
       GRADLE_OPTS: "-Djava.security.egd=file:/dev/./urandom -Dorg.gradle.parallel=true"
       IN_CI: true
     steps:
-      - name: "Install packages"
-        run: apt-get update && apt-get install -y git unzip docker docker-compose
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Setup Gradle
@@ -62,7 +58,7 @@ jobs:
       - name: "Run tests"
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: -Dspring.profiles.include=continuous-integration test --console=plain --info --stacktrace
+          arguments: test --console=plain --info --stacktrace
       - name: "Test if publishing works"
         uses: gradle/gradle-build-action@v2
         with:
