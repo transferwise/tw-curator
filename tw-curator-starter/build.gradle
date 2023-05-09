@@ -16,7 +16,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.apache.curator:curator-recipes:5.5.0'
-    implementation 'com.transferwise.common:tw-context-starter:0.11.1'
+    implementation 'com.transferwise.common:tw-context-starter:0.12.0'
     implementation 'org.apache.commons:commons-lang3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
