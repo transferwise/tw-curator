@@ -14,17 +14,15 @@ apply from: "../build.publishing.gradle"
 dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.5.2'
-
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.apache.curator:curator-recipes:5.2.0'
-    implementation 'com.transferwise.common:tw-context-starter:0.11.0'
+    implementation 'org.apache.curator:curator-recipes:5.5.0'
+    implementation 'com.transferwise.common:tw-context-starter:0.12.0'
     implementation 'org.apache.commons:commons-lang3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-actuator'
     testImplementation 'org.projectlombok:lombok'
-    testImplementation 'org.awaitility:awaitility:4.1.1'
+    testImplementation 'org.awaitility:awaitility:4.2.0'
 }
 
 if (System.getenv("IN_CI") != "true") {
