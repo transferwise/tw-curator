@@ -15,7 +15,7 @@ plugins {
 }
 
 ext {
-    springBootVersion = "${System.getenv("SPRING_BOOT_VERSION") ?: '2.6.15'}"
+    springBootVersion = "${System.getenv("SPRING_BOOT_VERSION") ?: '3.2.2'}"
 }
 
 idea.project {
