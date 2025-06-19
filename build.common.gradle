@@ -48,6 +48,8 @@ dependencies {
     implementation 'org.projectlombok:lombok'
 
     compileOnly "com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}"
+
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 java {
