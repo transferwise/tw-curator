@@ -22,7 +22,7 @@ jobs:
           - 3.5.0
     services:
       zookeeper:
-        image: bitnami/zookeeper:3.5.5
+        image: bitnamilegacy/zookeeper:3.9.3 # this is the last build, so we can use legacy version (internal lib uses different one already)
         ports:
           - 2181:2181
         env:
